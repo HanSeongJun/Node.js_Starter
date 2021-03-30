@@ -1,0 +1,19 @@
+{
+  "name": "node.js_example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HanSeongJun/Node.js_Starter.git"
+  },
+  "author": "Hsj",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HanSeongJun/Node.js_Starter/issues"
+  },
+  "homepage": "https://github.com/HanSeongJun/Node.js_Starter#readme"
+}
