@@ -6,8 +6,6 @@ const User = require("../models/user");
 
 const router = express.Router();
 
-// 회원가입 라우터
-// 기존에 같은 이메일로 가입한 사용자가 있는지 조회한 뒤, 있다면 회원가입 페이지로 돌려보냄.
 router.post("/join", isNotLoggedIn, async (req, res, next) => {
   const { email, nick, password } = req.body;
   try {
@@ -28,7 +26,6 @@ router.post("/join", isNotLoggedIn, async (req, res, next) => {
   }
 });
 
-// 로그인 라우터
 router.post("/login", isNotLoggedIn, (req, res, next) => {
   passport.authenticate("local", (authError, user, info) => {
     if (authError) {
@@ -45,14 +42,25 @@ router.post("/login", isNotLoggedIn, (req, res, next) => {
       }
       return res.redirect("/");
     });
-  })(req, res, next); // 미들웨어 내의 미들웨어에는 (req, res, next)를 붙인다.
+  })(req, res, next); // 미들웨어 내의 미들웨어에는 (req, res, next)를 붙입니다.
 });
 
-// 로그아웃 라우터
 router.get("/logout", isLoggedIn, (req, res) => {
   req.logout();
   req.session.destroy();
   res.redirect("/");
 });
+
+router.get("/kakao", passport.authenticate("kakao"));
+
+router.get(
+  "/kakao/callback",
+  passport.authenticate("kakao", {
+    failureRedirect: "/",
+  }),
+  (req, res) => {
+    res.redirect("/");
+  }
+);
 
 module.exports = router;

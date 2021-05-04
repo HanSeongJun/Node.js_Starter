@@ -9,6 +9,7 @@ const passport = require("passport");
 
 dotenv.config();
 const pageRouter = require("./routes/page");
+const authRouter = require("./routes/auth");
 const { sequelize } = require("./models");
 const passportConfig = require("./passport");
 
@@ -16,12 +17,10 @@ const app = express();
 passportConfig(); // 패스포트 설정
 app.set("port", process.env.PORT || 8001);
 app.set("view engine", "html");
-
 nunjucks.configure("views", {
   express: app,
   watch: true,
 });
-
 sequelize
   .sync({ force: false })
   .then(() => {
@@ -47,10 +46,11 @@ app.use(
     },
   })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 
-app.use(passport.initialize()); // 요청(req 객체)에 passport 설정을 심음
-app.use(passport.session()); // req.session 객체에 passport 정보를 저장
 app.use("/", pageRouter);
+app.use("/auth", authRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
